@@ -45,10 +45,16 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 
 ## Pulling and Merging With Master Branch
+```
 git checkout master
+
 git pull
+
 git checkout -b current-branch
+
 git rebase master
+```
+
 - sometimes it might be necessary to do npm install to reinstall packages
 
 ## Folder Structure
