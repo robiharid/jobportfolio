@@ -42,3 +42,27 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## Pulling and Merging With Master Branch
+```
+git checkout master
+
+git pull
+
+git checkout -b current-branch
+
+git rebase master
+```
+
+- sometimes it might be necessary to do npm install to reinstall packages
+
+## Folder Structure
+- src
+  - pages - Where all the main pages will be (usually a page that gets linked to)
+    - index.js - import/export pages to make importing through project easier
+  - shared
+    - components - where we will create the resuable components
+    - helpers - reuseable code that are not components
+    - index - import/export share files to make importing through project easier
+
