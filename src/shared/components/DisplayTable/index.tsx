@@ -1,7 +1,7 @@
 /// <reference path="./interfaces.d.ts" />
 
-import React from "react"
-import { Table } from "evergreen-ui"
+import React from "react";
+import { Table } from "evergreen-ui";
 
 // https://evergreen.segment.com/components/table
 const profiles = [
@@ -11,7 +11,7 @@ const profiles = [
     lastActivity: "30-01-2018",
     ltv: 30
   }
-]
+];
 
 const DisplayTable = ({  }: TablePropsInterface) => (
   <Table>
@@ -21,11 +21,8 @@ const DisplayTable = ({  }: TablePropsInterface) => (
       <Table.TextHeaderCell>ltv</Table.TextHeaderCell>
     </Table.Head>
     <Table.Body height={240}>
-      {profiles.map(profile => (
-        <Table.Row
-          key={profile.id}
-          isSelectable
-          onSelect={() => alert(profile.name)}>
+      {profiles.map((profile) => (
+        <Table.Row key={profile.id} isSelectable onSelect={() => alert(profile.name)}>
           <Table.TextCell>{profile.name}</Table.TextCell>
           <Table.TextCell>{profile.lastActivity}</Table.TextCell>
           <Table.TextCell isNumber>{profile.ltv}</Table.TextCell>
@@ -33,6 +30,6 @@ const DisplayTable = ({  }: TablePropsInterface) => (
       ))}
     </Table.Body>
   </Table>
-)
+);
 
-export default DisplayTable
+export default DisplayTable;

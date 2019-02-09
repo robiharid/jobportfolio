@@ -1,8 +1,8 @@
 /// <reference path="./interfaces.d.ts" />
 
-import React from "react"
-import { Link } from "react-router-dom"
-import { IconButton } from "evergreen-ui"
+import React from "react";
+import { Link } from "react-router-dom";
+import { IconButton } from "evergreen-ui";
 
 const Header = ({ setShown }: HeaderPropsInterface) => (
   <div>
@@ -11,6 +11,6 @@ const Header = ({ setShown }: HeaderPropsInterface) => (
     <Link to="/about">About</Link>
     <Link to="/profile">Profile</Link>
   </div>
-)
+);
 
-export default Header
+export default Header;
