@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { DisplayTable } from '../../shared'
+import { DisplayTable, Form} from '../../shared'
 
 export default class Profile extends Component {
   render() {
@@ -7,6 +7,8 @@ export default class Profile extends Component {
       <div>
         Profile
         <DisplayTable></DisplayTable>
+
+        <Form></Form>
       </div>
     )
   }

@@ -50,7 +50,7 @@ git checkout master
 
 git pull
 
-git checkout -b current-branch
+git checkout current-branch
 
 git rebase master
 ```

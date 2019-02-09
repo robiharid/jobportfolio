@@ -1,15 +1,10 @@
 import React, { Component } from "react"
 import { Route } from "react-router-dom"
-import firebase from "firebase"
+import firebase from "./firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
 import { Header, Nav } from "./shared"
 import { About, Home, Profile } from "./pages"
-
-firebase.initializeApp({
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN
-})
 
 const NAV_OPTIONS = [
   {
