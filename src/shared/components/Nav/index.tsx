@@ -3,7 +3,7 @@
 import React from "react"
 import { SideSheet, Paragraph, Position } from "evergreen-ui"
 import { Link } from "react-router-dom"
-import firebase from "firebase"
+import firebase from "../../../firebase"
 
 const Nav = ({ isShown, setShown, navOptions }: NavPropsInterface) => {
   let user = ""

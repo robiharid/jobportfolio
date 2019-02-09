@@ -1,18 +1,8 @@
 /// <reference path="./interfaces.d.ts" />
 
 import React, { Component } from "react"
-import { TextInput, Button, Paragraph } from "evergreen-ui"
-import firebase from "firebase"
-
-// https://evergreen.segment.com/components/table
-
-console.log(process.env.REACT_APP_FIREBASE_DB)
-
-// // name
-// email
-// salary
-// deadline
-// location
+import { TextInput, Button, Paragraph, toaster } from "evergreen-ui"
+import firebase from "../../../firebase"
 
 export default class Form extends Component {
   state = {
@@ -21,7 +11,8 @@ export default class Form extends Component {
     salary: 0,
     deadline: "",
     location: "",
-    link: ""
+    link: "",
+    errorMessage: ""
   }
 
   handleInputChange = (event: any) => {
@@ -31,37 +22,50 @@ export default class Form extends Component {
   }
 
   submitForm = () => {
+    let user = ""
+    try {
+      user = firebase.auth().currentUser.email
+    } catch {
+      user = undefined
+    }
+
     const { name, email, salary, deadline, location, link } = this.state
 
-    const db = firebase.firestore()
-
-    const companiesRef = db.collection("companies")
-
-    companiesRef.add({
-      email,
+    const companyToAdd = {
       name,
+      email,
       salary,
       deadline,
       location,
       link
-    })
+    }
 
-    this.setState({
-      email: "",
-      name: "",
-      salary: 0,
-      deadline: "",
-      location: "",
-      link: ""
-    })
+    if (user) {
+      const db = firebase.firestore()
+
+      const userRef = db.collection("users").doc(user)
+
+      userRef.collection("companies").add(companyToAdd)
+
+      this.setState({
+        email: "",
+        name: "",
+        salary: 0,
+        deadline: "",
+        location: "",
+        link: ""
+      })
+    } else {
+      toaster.danger('You are not signed in.')
+    }
   }
 
   render() {
-    const { name, email, salary, deadline, location, link } = this.state
+    const { name, email, salary, deadline, location, link, errorMessage} = this.state
     return (
       <div>
         <Paragraph>Name</Paragraph>
-        
+
         <TextInput
           onChange={this.handleInputChange}
           value={name}
