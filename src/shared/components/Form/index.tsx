@@ -35,11 +35,9 @@ export default class Form extends Component {
 
     const db = firebase.firestore()
 
-    db.settings({
-      timestampsInSnapshots: true
-    })
+    const companiesRef = db.collection("companies")
 
-    const companiesRef = db.collection("companies").add({
+    companiesRef.add({
       email,
       name,
       salary,
@@ -63,48 +61,58 @@ export default class Form extends Component {
     return (
       <div>
         <Paragraph>Name</Paragraph>
+        
         <TextInput
           onChange={this.handleInputChange}
           value={name}
           name="name"
           type="text"
         />
+
         <Paragraph>Email</Paragraph>
+
         <TextInput
           onChange={this.handleInputChange}
           value={email}
           name="email"
           type="email"
         />
+
         <Paragraph>Salary</Paragraph>
+
         <TextInput
           onChange={this.handleInputChange}
           value={salary}
           name="salary"
           type="number"
         />
+
         <Paragraph>Deadline</Paragraph>
+
         <TextInput
           onChange={this.handleInputChange}
           value={deadline}
           name="deadline"
           type="text"
         />
+
         <Paragraph>Location</Paragraph>
+
         <TextInput
           onChange={this.handleInputChange}
           value={location}
           name="location"
           type="text"
         />
+
         <Paragraph>Link</Paragraph>
+
         <TextInput
           onChange={this.handleInputChange}
           value={link}
           name="link"
           type="text"
         />
-
         <Button onClick={this.submitForm}>Submit</Button>
       </div>
     )
