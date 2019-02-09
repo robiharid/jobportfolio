@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Table } from "evergreen-ui";
-import firebase from "firebase";
+import firebase from "../../../firebase";
 
 var database = firebase
   .database()
@@ -25,11 +25,16 @@ const profiles = [
 
 export default class DisplayTable extends Component {
   state = {
-    name: ""
+    name: "",
+    email: "",
+    salary: "",
+    deadline: "",
+    location: ""
   };
 
   componentDidMount() {
     database.on("value", snap => {
+      console.log(snap.val().name);
       this.setState({
         name: snap.val().name,
         email: snap.val().email,
@@ -45,7 +50,7 @@ export default class DisplayTable extends Component {
         <Table.SearchHeaderCell />
         <Table.Head>
           <Table.TextHeaderCell>Logo</Table.TextHeaderCell>
-          <Table.TextHeaderCell>Name{this.state.name}</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Name</Table.TextHeaderCell>
           <Table.TextHeaderCell>Email</Table.TextHeaderCell>
           <Table.TextHeaderCell>Salary</Table.TextHeaderCell>
           <Table.TextHeaderCell>Deadline</Table.TextHeaderCell>
@@ -59,7 +64,7 @@ export default class DisplayTable extends Component {
               onSelect={() => alert(profile.name)}
             >
               <Table.TextCell>{profile.logo}</Table.TextCell>
-              <Table.TextCell>{profile.name}</Table.TextCell>
+              <Table.TextCell>{this.state.name}</Table.TextCell>
               <Table.TextCell>{profile.email}</Table.TextCell>
               <Table.TextCell>{profile.salary}</Table.TextCell>
               <Table.TextCell>{profile.deadline}</Table.TextCell>
