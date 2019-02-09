@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { Route } from "react-router-dom";
-import { Header, Nav } from "./shared";
-import { About, Home, Profile } from "./pages";
-import firebase from "firebase";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import React, { Component } from "react"
+import { Route } from "react-router-dom"
+import firebase from "firebase"
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+
+import { Header, Nav } from "./shared"
+import { About, Home, Profile } from "./pages"
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN
-});
-
+})
 
 const NAV_OPTIONS = [
   {
@@ -23,21 +23,20 @@ const NAV_OPTIONS = [
   {
     link: "/profile",
     label: "Profile"
-  },
+  }
 ]
 class App extends Component {
-  state = { isSignedIn: false,
-            isShown: false };
+  state = { isSignedIn: false, isShown: false }
   uiConfig = {
     signInFlow: "popup",
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
-  };
-  
+  }
+
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
-      this.setState({ isSignedIn: !!user });
-    });
-  };
+      this.setState({ isSignedIn: !!user })
+    })
+  }
 
   setShowNav = (value: boolean): void => {
     this.setState({
@@ -45,16 +44,17 @@ class App extends Component {
     })
   }
 
-
   render() {
     return (
       <div>
-        <Header />
+        <Header 
+          setShown={this.setShowNav}
+        />
         <Nav
           isShown={this.state.isShown}
           setShown={this.setShowNav}
           navOptions={NAV_OPTIONS}
-        ></Nav>
+        />
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/profile" component={Profile} />
@@ -71,10 +71,9 @@ class App extends Component {
             firebaseAuth={firebase.auth()}
           />
         )}
-
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
