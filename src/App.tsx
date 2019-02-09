@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import { Header } from "./shared";
+import { Header, Nav } from "./shared";
 import { About, Home, Profile } from "./pages";
 import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
@@ -11,21 +11,34 @@ firebase.initializeApp({
 });
 
 class App extends Component {
-  state = { isSignedIn: false };
+  state = { isSignedIn: false,
+            isShown: false };
   uiConfig = {
     signInFlow: "popup",
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
   };
+  
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user });
-      console.log("user", user);
     });
   };
+
+  setShowNav = (value: boolean): void => {
+    this.setState({
+      isShown: value
+    })
+  }
+
+
   render() {
     return (
       <div>
         <Header />
+        <Nav
+          isShown={this.state.isShown}
+          setShown={this.setShowNav}
+        ></Nav>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/profile" component={Profile} />
@@ -42,6 +55,7 @@ class App extends Component {
             firebaseAuth={firebase.auth()}
           />
         )}
+
       </div>
     );
   }
