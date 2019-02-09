@@ -18,8 +18,8 @@ export default class Form extends Component {
   handleInputChange = (event: any) => {
     this.setState({
       [event.target.name]: event.target.value
-    })
-  }
+    });
+  };
 
   submitForm = () => {
     let user = ""
@@ -119,6 +119,6 @@ export default class Form extends Component {
         />
         <Button onClick={this.submitForm}>Submit</Button>
       </div>
-    )
+    );
   }
 }
