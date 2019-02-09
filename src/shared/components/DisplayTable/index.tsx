@@ -4,12 +4,6 @@ import React, { Component } from "react";
 import { Table } from "evergreen-ui";
 import firebase from "../../../firebase";
 
-var database = firebase
-  .database()
-  .ref()
-  .child("companies")
-  .child("company");
-
 // https://evergreen.segment.com/components/table
 const profiles = [
   {
@@ -33,18 +27,37 @@ export default class DisplayTable extends Component {
   };
 
   componentDidMount() {
-    database.on("value", snap => {
-      console.log(snap.val().name);
-      this.setState({
-        name: snap.val().name,
-        email: snap.val().email,
-        salary: snap.val().salary,
-        deadline: snap.val().deadline,
-        location: snap.val().location
+    const db = firebase.firestore();
+    const companiesRef = db.collection("companies");
+    companiesRef
+      .doc("2yngzuxQtLzaDAOGsvAM")
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          this.setState({
+            name: doc.data().name,
+            email: doc.data().email,
+            salary: doc.data().salary,
+            deadline: doc.data().deadline,
+            location: doc.data().location
+          });
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch(function(error) {
+        console.log("Error getting document:", error);
+      });
+
+    companiesRef.get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        console.log(doc.data());
       });
     });
   }
   render() {
+    const { name, email, salary, deadline, location } = this.state;
     return (
       <Table>
         <Table.SearchHeaderCell />
@@ -64,11 +77,11 @@ export default class DisplayTable extends Component {
               onSelect={() => alert(profile.name)}
             >
               <Table.TextCell>{profile.logo}</Table.TextCell>
-              <Table.TextCell>{this.state.name}</Table.TextCell>
-              <Table.TextCell>{profile.email}</Table.TextCell>
-              <Table.TextCell>{profile.salary}</Table.TextCell>
-              <Table.TextCell>{profile.deadline}</Table.TextCell>
-              <Table.TextCell>{profile.location}</Table.TextCell>
+              <Table.TextCell>{name}</Table.TextCell>
+              <Table.TextCell>{email}</Table.TextCell>
+              <Table.TextCell>{salary}</Table.TextCell>
+              <Table.TextCell>{deadline}</Table.TextCell>
+              <Table.TextCell>{location}</Table.TextCell>
             </Table.Row>
           ))}
         </Table.Body>
