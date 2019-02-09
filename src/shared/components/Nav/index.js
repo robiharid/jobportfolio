@@ -1,25 +1,33 @@
 import React from "react"
 import { SideSheet, Paragraph, Button, Position } from "evergreen-ui"
 import { Link } from "react-router-dom"
-import { Profile } from "../../../pages/index"
+import firebase from "firebase";
 
-const Nav = ({ isShown, setShown }) => {
+const Nav = ({ isShown, setShown, navOptions }) => {
+  let user = ''
+  try {
+    user = firebase.auth().currentUser.displayName
+  } catch {
+    user = "Not Found"
+  }
+  
   return (
     <div>
       <SideSheet
         position={Position.LEFT}
         isShown={isShown}
         onCloseComplete={() => setShown(false)}>
-
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <Paragraph margin={40}>Home</Paragraph>
-        </Link>
-        <Link to="/about" style={{ textDecoration: 'none' }}>
-          <Paragraph margin={40}>About</Paragraph>
-        </Link>
-        <Link to="/profile" style={{ textDecoration: 'none' }}>
-          <Paragraph margin={40}>Profile</Paragraph>
-        </Link>
+        <Paragraph margin={20}>
+          Welcome {user}
+        </Paragraph>
+        
+        {navOptions.map(option => (
+          <Link to={option.link} 
+                style={{ textDecoration: "none" }}
+                onClick={() => setShown(false)}>
+            <Paragraph margin={20}>{option.label}</Paragraph>
+          </Link>
+        ))}
       </SideSheet>
       <Button onClick={() => setShown(true)}>Show Basic Side Sheet</Button>
     </div>

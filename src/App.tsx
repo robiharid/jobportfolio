@@ -10,6 +10,21 @@ firebase.initializeApp({
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN
 });
 
+
+const NAV_OPTIONS = [
+  {
+    link: "/",
+    label: "Home"
+  },
+  {
+    link: "/about",
+    label: "About"
+  },
+  {
+    link: "/profile",
+    label: "Profile"
+  },
+]
 class App extends Component {
   state = { isSignedIn: false,
             isShown: false };
@@ -38,6 +53,7 @@ class App extends Component {
         <Nav
           isShown={this.state.isShown}
           setShown={this.setShowNav}
+          navOptions={NAV_OPTIONS}
         ></Nav>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
