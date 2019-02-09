@@ -1,38 +1,73 @@
 /// <reference path="./interfaces.d.ts" />
 
-import React from "react"
-import { Table } from "evergreen-ui"
+import React, { Component } from "react";
+import { Table } from "evergreen-ui";
+import firebase from "firebase";
+
+var database = firebase
+  .database()
+  .ref()
+  .child("companies")
+  .child("company");
 
 // https://evergreen.segment.com/components/table
 const profiles = [
   {
     id: "adjfdlkf",
-    name: "robi",
-    lastActivity: "30-01-2018",
-    ltv: 30
+    logo: "coming soon",
+    name: "First Derivatives",
+    email: "jobs@fd.com",
+    salary: "£30,000",
+    deadline: "10/01/2019",
+    location: "Newry, Ireland"
   }
-]
+];
 
-const DisplayTable = ({  }: TablePropsInterface) => (
-  <Table>
-    <Table.Head>
-      <Table.SearchHeaderCell />
-      <Table.TextHeaderCell>Last Activity</Table.TextHeaderCell>
-      <Table.TextHeaderCell>ltv</Table.TextHeaderCell>
-    </Table.Head>
-    <Table.Body height={240}>
-      {profiles.map(profile => (
-        <Table.Row
-          key={profile.id}
-          isSelectable
-          onSelect={() => alert(profile.name)}>
-          <Table.TextCell>{profile.name}</Table.TextCell>
-          <Table.TextCell>{profile.lastActivity}</Table.TextCell>
-          <Table.TextCell isNumber>{profile.ltv}</Table.TextCell>
-        </Table.Row>
-      ))}
-    </Table.Body>
-  </Table>
-)
+export default class DisplayTable extends Component {
+  state = {
+    name: ""
+  };
 
-export default DisplayTable
+  componentDidMount() {
+    database.on("value", snap => {
+      this.setState({
+        name: snap.val().name,
+        email: snap.val().email,
+        salary: snap.val().salary,
+        deadline: snap.val().deadline,
+        location: snap.val().location
+      });
+    });
+  }
+  render() {
+    return (
+      <Table>
+        <Table.SearchHeaderCell />
+        <Table.Head>
+          <Table.TextHeaderCell>Logo</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Name{this.state.name}</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Email</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Salary</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Deadline</Table.TextHeaderCell>
+          <Table.TextHeaderCell>Location</Table.TextHeaderCell>
+        </Table.Head>
+        <Table.Body height={240}>
+          {profiles.map(profile => (
+            <Table.Row
+              key={profile.id}
+              isSelectable
+              onSelect={() => alert(profile.name)}
+            >
+              <Table.TextCell>{profile.logo}</Table.TextCell>
+              <Table.TextCell>{profile.name}</Table.TextCell>
+              <Table.TextCell>{profile.email}</Table.TextCell>
+              <Table.TextCell>{profile.salary}</Table.TextCell>
+              <Table.TextCell>{profile.deadline}</Table.TextCell>
+              <Table.TextCell>{profile.location}</Table.TextCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    );
+  }
+}
