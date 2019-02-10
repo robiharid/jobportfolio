@@ -1,91 +1,125 @@
-import React, { Component } from "react";
-import { TextInput, Button, Paragraph, toaster } from "evergreen-ui";
+import React, { Component } from 'react';
+import { TextInput, Button, Paragraph, toaster } from 'evergreen-ui';
+import { AuthUserContext } from '../Session';
+import { withFirebase } from '../Firebase';
 
-export default class Form extends Component {
+class Form extends Component {
   state = {
-    name: "",
-    email: "",
+    name: '',
+    email: '',
     salary: 0,
-    deadline: "",
-    location: "",
-    link: "",
-    errorMessage: ""
+    deadline: '',
+    location: '',
+    link: '',
   };
 
-  handleInputChange = (event) => {
+  handleInputChange = event => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
-  submitForm = () => {
-    let user = "";
-    try {
-      user = firebase.auth().currentUser.email;
-    } catch {
-      user = undefined;
-    }
+  onCreateCompany = (event, authUser) => {
+    this.props.firebase.companies().add({
+      name: this.state.name,
+      email: this.state.email,
+      salary: this.state.salary,
+      deadline: this.state.deadline,
+      location: this.state.location,
+      link: this.state.link,
+      userId: authUser.uid,
+      createdAt: this.props.firebase.fieldValue.serverTimestamp(),
+    });
 
-    const { name, email, salary, deadline, location, link } = this.state;
+    this.setState({
+      name: '',
+      email: '',
+      salary: '',
+      deadline: '',
+      location: '',
+      link: '',
+    });
 
-    const companyToAdd = {
+    // event.preventDefault();
+  };
+
+  render() {
+    const {
       name,
       email,
       salary,
       deadline,
       location,
-      link
-    };
-
-    if (user) {
-      const db = firebase.firestore();
-
-      const userRef = db.collection("users").doc(user);
-
-      userRef.collection("companies").add(companyToAdd);
-
-      this.setState({
-        email: "",
-        name: "",
-        salary: 0,
-        deadline: "",
-        location: "",
-        link: ""
-      });
-    } else {
-      toaster.danger("You are not signed in.");
-    }
-  };
-
-  render() {
-    const { name, email, salary, deadline, location, link, errorMessage } = this.state;
+      link,
+    } = this.state;
     return (
-      <div>
-        <Paragraph>Name</Paragraph>
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <div>
+            <Paragraph>Name</Paragraph>
 
-        <TextInput onChange={this.handleInputChange} value={name} name="name" type="text" />
+            <TextInput
+              onChange={this.handleInputChange}
+              value={name}
+              name="name"
+              type="text"
+            />
 
-        <Paragraph>Email</Paragraph>
+            <Paragraph>Email</Paragraph>
 
-        <TextInput onChange={this.handleInputChange} value={email} name="email" type="email" />
+            <TextInput
+              onChange={this.handleInputChange}
+              value={email}
+              name="email"
+              type="email"
+            />
 
-        <Paragraph>Salary</Paragraph>
+            <Paragraph>Salary</Paragraph>
 
-        <TextInput onChange={this.handleInputChange} value={salary} name="salary" type="number" />
+            <TextInput
+              onChange={this.handleInputChange}
+              value={salary}
+              name="salary"
+              type="number"
+            />
 
-        <Paragraph>Deadline</Paragraph>
+            <Paragraph>Deadline</Paragraph>
 
-        <TextInput onChange={this.handleInputChange} value={deadline} name="deadline" type="text" />
+            <TextInput
+              onChange={this.handleInputChange}
+              value={deadline}
+              name="deadline"
+              type="text"
+            />
 
-        <Paragraph>Location</Paragraph>
+            <Paragraph>Location</Paragraph>
 
-        <TextInput onChange={this.handleInputChange} value={location} name="location" type="text" />
+            <TextInput
+              onChange={this.handleInputChange}
+              value={location}
+              name="location"
+              type="text"
+            />
 
-        <Paragraph>Link</Paragraph>
+            <Paragraph>Link</Paragraph>
 
-        <TextInput onChange={this.handleInputChange} value={link} name="link" type="text" />
-        <Button onClick={this.submitForm}>Submit</Button>
-      </div>
+            <TextInput
+              onChange={this.handleInputChange}
+              value={link}
+              name="link"
+              type="text"
+            />
+
+            <Button
+              onClick={event => this.onCreateCompany(event, authUser)}
+            >
+              Submit
+            </Button>
+          </div>
+        )}
+      </AuthUserContext.Consumer>
     );
   }
 }
+
+export default withFirebase(Form);

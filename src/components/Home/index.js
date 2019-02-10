@@ -4,15 +4,14 @@ import { compose } from 'recompose';
 import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 import Messages from '../Messages';
+import Form from '../Form';
+import DisplayTable from '../DisplayTable'
 
 class HomePage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      users: null,
-    };
-  }
+  state = {
+    users: null,
+    text: 'ljasdfjlasdfkj',
+  };
 
   componentDidMount() {
     this.unsubscribe = this.props.firebase
@@ -38,6 +37,8 @@ class HomePage extends Component {
         <p>The Home Page is accessible by every signed in user.</p>
 
         <Messages users={this.state.users} />
+        <Form beans={this.state.text} />
+        <DisplayTable></DisplayTable>
       </div>
     );
   }
