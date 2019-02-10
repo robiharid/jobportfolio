@@ -17,73 +17,107 @@ const profiles = [
   }
 ];
 
-export default class DisplayTable extends Component {
-  state = {
-    name: "",
-    email: "",
-    salary: "",
-    deadline: "",
-    location: ""
-  };
+type iState = {
+  userCompanies: {
+    name: string,
+    email: string,
+    salary: number,
+    deadline: string,
+    location: string,
+    id: string
+  }[],
+  errorMessage: string
+}
+
+export default class DisplayTable extends Component{
+  // state: Readonly<IState> = {
+  //   userCompanies: [],
+  //   errorMessage: ""
+  // };
+  state: iState = {
+    userCompanies: [],
+    errorMessage:""
+  }
 
   componentDidMount() {
     const db = firebase.firestore();
-    const companiesRef = db.collection("companies");
-    companiesRef
-      .doc("2yngzuxQtLzaDAOGsvAM")
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          this.setState({
-            name: doc.data().name,
-            email: doc.data().email,
-            salary: doc.data().salary,
-            deadline: doc.data().deadline,
-            location: doc.data().location
-          });
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      })
-      .catch(function(error) {
-        console.log("Error getting document:", error);
-      });
 
-    companiesRef.get().then(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        console.log(doc.data());
+    let user = "";
+
+    try {
+      user = firebase.auth().currentUser.email;
+      console.log(user);
+
+      const currUserCompanies: any = [];
+
+      if (user) {
+        console.log(user);
+        const userCompaniesRef = db
+          .collection("users")
+          .doc(user)
+          .collection("companies");
+
+        userCompaniesRef
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              console.log(doc.id, doc.data());
+              console.log(doc.id, doc);
+              let currDoc = doc.data();
+              currDoc.id = doc.id;
+
+              currUserCompanies.push(currDoc);
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        console.log(user);
+        this.setState({
+          errorMessage: "User not authenticated"
+        });
+      }
+
+      this.setState({
+        userCompanies: [currUserCompanies]
       });
-    });
+    } catch (error) {
+      console.log(error);
+      user = undefined;
+    }
   }
   render() {
-    const { name, email, salary, deadline, location } = this.state;
+    // const { name, email, salary, deadline, location } = this.state;
+    console.log("state", this.state);
     return (
       <Table>
+        {JSON.stringify(this.state)}
         <Table.SearchHeaderCell />
         <Table.Head>
-          <Table.TextHeaderCell>Logo</Table.TextHeaderCell>
+          {/* <Table.TextHeaderCell>Logo</Table.TextHeaderCell> */}
           <Table.TextHeaderCell>Name</Table.TextHeaderCell>
           <Table.TextHeaderCell>Email</Table.TextHeaderCell>
           <Table.TextHeaderCell>Salary</Table.TextHeaderCell>
           <Table.TextHeaderCell>Deadline</Table.TextHeaderCell>
           <Table.TextHeaderCell>Location</Table.TextHeaderCell>
+          <Table.TextHeaderCell>ID</Table.TextHeaderCell>
         </Table.Head>
         <Table.Body height={240}>
-          {profiles.map(profile => (
-            <Table.Row
-              key={profile.id}
-              isSelectable
-              onSelect={() => alert(profile.name)}
-            >
-              <Table.TextCell>{profile.logo}</Table.TextCell>
-              <Table.TextCell>{name}</Table.TextCell>
-              <Table.TextCell>{email}</Table.TextCell>
-              <Table.TextCell>{salary}</Table.TextCell>
-              <Table.TextCell>{deadline}</Table.TextCell>
-              <Table.TextCell>{location}</Table.TextCell>
-            </Table.Row>
-          ))}
+          {this.state.userCompanies.map((company) => {
+            console.log("company", company)
+            return (
+              <Table.Row key={company.id} isSelectable onSelect={() => alert(company.name)}>
+                {/* <Table.TextCell>{profile.logo}</Table.TextCell> */}
+                <Table.TextCell>{company.name}</Table.TextCell>
+                <Table.TextCell>{company.email}</Table.TextCell>
+                <Table.TextCell>{company.salary}</Table.TextCell>
+                <Table.TextCell>{company.deadline}</Table.TextCell>
+                <Table.TextCell>{company.location}</Table.TextCell>
+                <Table.TextCell>{company.id}</Table.TextCell>
+              </Table.Row>
+            );
+          })}
         </Table.Body>
       </Table>
     );
