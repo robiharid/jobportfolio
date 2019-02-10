@@ -5,7 +5,8 @@ import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 import Messages from '../Messages';
 import Form from '../Form';
-import DisplayTable from '../DisplayTable'
+import DisplayTable from '../DisplayTable';
+import { AuthUserContext } from '../Session';
 
 class HomePage extends Component {
   state = {
@@ -32,14 +33,20 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Home Page</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <div>
+            <h1>Home Page</h1>
+            <p>
+              The Home Page is accessible by every signed in user.
+            </p>
 
-        <Messages users={this.state.users} />
-        <Form beans={this.state.text} />
-        <DisplayTable></DisplayTable>
-      </div>
+            <Messages users={this.state.users} />
+            <Form beans={this.state.text} />
+            <DisplayTable authUser={authUser} />
+          </div>
+        )}
+      </AuthUserContext.Consumer>
     );
   }
 }
