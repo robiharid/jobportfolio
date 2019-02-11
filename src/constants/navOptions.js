@@ -17,8 +17,8 @@ export const NonAuthedRoutes = [
     link: ROUTES.LANDING,
     label: "Home"
   },
-  {
-    link: ROUTES.SIGN_IN,
-    label: "Sign In"
-  }
+  // {
+  //   link: ROUTES.SIGN_IN,
+  //   label: "Sign In"
+  // }
 ]

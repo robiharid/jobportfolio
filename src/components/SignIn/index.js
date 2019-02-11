@@ -5,6 +5,9 @@ import { compose } from 'recompose';
 import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
+
+import {Button } from 'evergreen-ui'
+
 import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
@@ -83,9 +86,9 @@ class SignInFormBase extends Component {
           type="password"
           placeholder="Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <Button disabled={isInvalid} type="submit">
           Sign In
-        </button>
+        </Button>
 
         {error && <p>{error.message}</p>}
       </form>
@@ -134,7 +137,7 @@ class SignInGoogleBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Google</button>
+        <Button appearance="primary" type="submit">Sign In with Google</Button>
 
         {error && <p>{error.message}</p>}
       </form>
@@ -183,7 +186,7 @@ class SignInFacebookBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Facebook</button>
+        <Button type="submit">Sign In with Facebook</Button>
 
         {error && <p>{error.message}</p>}
       </form>
@@ -232,7 +235,7 @@ class SignInTwitterBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <button type="submit">Sign In with Twitter</button>
+        <Button type="submit">Sign In with Twitter</Button>
 
         {error && <p>{error.message}</p>}
       </form>
