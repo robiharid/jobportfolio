@@ -14,6 +14,7 @@ import Header from '../Header';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
+import {AppContentWrapper} from './styles'
 
 class App extends Component {
 
@@ -22,20 +23,19 @@ class App extends Component {
   }
 
   setNavShown = (value) =>  {
-    console.log(value);
     this.setState({ isNavShown: value });
   }
 
 
   render() {
     return (
+
       <Router>
         <div>
           <Header setNavShown={this.setNavShown}/>
           <Navigation setNavShown={this.setNavShown} isNavShown={this.state.isNavShown} />
 
-          <hr />
-
+          <AppContentWrapper>
           <Route
             exact
             path={ROUTES.LANDING}
@@ -51,6 +51,8 @@ class App extends Component {
           <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
           <Route path={ROUTES.PROFILE} component={Profile} />
+          </AppContentWrapper>
+
         </div>
       </Router>
     );

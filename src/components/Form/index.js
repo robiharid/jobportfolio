@@ -22,8 +22,6 @@ class Form extends Component {
   };
 
   onCreateCompany = (event, authUser) => {
-    console.log(authUser);
-
     this.props.firebase.userCompanies(authUser.uid).add({
       name: this.state.name,
       email: this.state.email,
@@ -69,7 +67,6 @@ class Form extends Component {
             onCloseComplete={closeModal}
             confirmLabel="Add"
             onConfirm={event => this.onCreateCompany(event, authUser)}
-
           >
             <FormWrapper>
               <Paragraph>Name</Paragraph>

@@ -8,14 +8,14 @@ import {
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 import { SignInGoogle } from '../SignIn';
-import { NavWrapper,NavItem } from './styles';
+import { NavWrapper, NavItem } from './styles';
 
 //import * as ROLES from '../../constants/roles';
 
 const NavigationAuth = ({ authUser, setNavShown }) => (
   <div>
-    {AuthedRoutes.map(option => (
-      <NavItem>
+    {AuthedRoutes.map((option, index) => (
+      <NavItem key={index}>
         <Link
           to={option.link}
           style={{ textDecoration: 'none' }}
@@ -33,8 +33,8 @@ const NavigationAuth = ({ authUser, setNavShown }) => (
 
 const NavigationNonAuth = ({ setNavShown }) => (
   <div>
-    {NonAuthedRoutes.map(option => (
-      <NavItem>
+    {NonAuthedRoutes.map((option, index) => (
+      <NavItem key={index}>
         <Link
           to={option.link}
           style={{ textDecoration: 'none' }}
@@ -51,7 +51,6 @@ const NavigationNonAuth = ({ setNavShown }) => (
 );
 
 const Navigation = ({ isNavShown, setNavShown }) => {
-  console.log(isNavShown);
   return (
     <SideSheet
       position={Position.LEFT}
