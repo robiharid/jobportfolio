@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const ProfileWrapper = styled.div`
   display: flex;
@@ -8,11 +8,21 @@ export const ProfileWrapper = styled.div`
   /* margin-left: 20px;
   margin-right: 20px;
   box-sizing: border-box; */
-
-`
+`;
 export const ProfileLeftColumn = styled.div`
-  flex: 20
-`
+  .profileItem {
+    margin-top: 50px;
+  }
+  .columnButton {
+    
+    width: 30%;
+  }
+  justify-content: left;
+  align-items: left;
+  display: flex;
+  flex-direction: column;
+  flex: 20;
+`;
 export const ProfileRightColumn = styled.div`
-  flex: 80
-`
+  flex: 80;
+`;

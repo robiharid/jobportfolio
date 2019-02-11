@@ -6,6 +6,7 @@
     "evergreen-ui": "^4.11.3",
     "firebase": "^5.6.0",
     "react": "^16.6.3",
+    "react-day-picker": "^7.2.4",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",

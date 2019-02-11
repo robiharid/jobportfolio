@@ -73,9 +73,9 @@ class Firebase {
             const dbUser = snapshot.data();
 
             // default empty roles
-            if (!dbUser.roles) {
-              dbUser.roles = [];
-            }
+            // if (!dbUser.roles) {
+            //   dbUser.roles = [];
+            // }
 
             // merge auth and db user
             authUser = {
@@ -110,7 +110,8 @@ class Firebase {
   companies = () => this.db.collection('companies');
 
   //add company to uid
-  userCompanies = (userId) => this.db.doc(`users/${userId}`).collection('companies')
+  userCompanies = userId =>
+    this.db.doc(`users/${userId}`).collection('companies');
 }
 
 export default Firebase;
