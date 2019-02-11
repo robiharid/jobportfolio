@@ -1,54 +1,66 @@
 import React from 'react';
+import { SideSheet, Paragraph, Position } from 'evergreen-ui';
 import { Link } from 'react-router-dom';
-
+import {
+  AuthedRoutes,
+  NonAuthedRoutes,
+} from '../../constants/navOptions';
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
-import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
 
-const Navigation = () => (
-  <AuthUserContext.Consumer>
-    {authUser =>
-      authUser ? (
-        <NavigationAuth authUser={authUser} />
-      ) : (
-        <NavigationNonAuth />
-      )
-    }
-  </AuthUserContext.Consumer>
+//import * as ROLES from '../../constants/roles';
+
+const NavigationAuth = ({ authUser, setNavShown }) => (
+  <div>
+    {AuthedRoutes.map(option => (
+      <Link
+        to={option.link}
+        style={{ textDecoration: 'none' }}
+        onClick={() => setNavShown(false)}
+      >
+        <Paragraph margin={20}>{option.label}</Paragraph>
+      </Link>
+    ))}
+    <SignOutButton />
+  </div>
 );
 
-const NavigationAuth = ({ authUser }) => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.HOME}>Home</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.ACCOUNT}>Account</Link>
-    </li>
-    {authUser.roles.includes(ROLES.ADMIN) && (
-      <li>
-        <Link to={ROUTES.ADMIN}>Admin</Link>
-      </li>
-    )}
-    <li>
-      <SignOutButton />
-    </li>
-  </ul>
+const NavigationNonAuth = ({ setNavShown }) => (
+  <div>
+    {NonAuthedRoutes.map(option => (
+      <Link
+        to={option.link}
+        style={{ textDecoration: 'none' }}
+        onClick={() => setNavShown(false)}
+      >
+        <Paragraph margin={20}>{option.label}</Paragraph>
+      </Link>
+    ))}
+  </div>
 );
 
-const NavigationNonAuth = () => (
-  <ul>
-    <li>
-      <Link to={ROUTES.LANDING}>Landing</Link>
-    </li>
-    <li>
-      <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-    </li>
-  </ul>
-);
+const Navigation = ({ isNavShown, setNavShown }) => {
+  console.log(isNavShown)
+  return (
+    <SideSheet
+      position={Position.LEFT}
+      isShown={isNavShown}
+      onCloseComplete={() => setNavShown(false)}
+    >
+      <AuthUserContext.Consumer>
+        {authUser =>
+          authUser ? (
+            <NavigationAuth
+              authUser={authUser}
+              setNavShown={setNavShown}
+            />
+          ) : (
+            <NavigationNonAuth setNavShown={setNavShown} />
+          )
+        }
+      </AuthUserContext.Consumer>
+    </SideSheet>
+  );
+};
 
 export default Navigation;
