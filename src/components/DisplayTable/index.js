@@ -16,9 +16,9 @@ class DisplayTable extends Component {
 
   onListenForCompanies = () => {
     this.setState({ loading: true });
-
+    console.log("onListenForCompanies", this.props)
     this.unsubscribe = this.props.firebase
-      .companies()
+      .userCompanies(this.props.authUser.uid)
       .orderBy('createdAt', 'desc')
       .limit(this.state.limit)
       .onSnapshot(snapshot => {

@@ -3,6 +3,8 @@ import { TextInput, Button, Paragraph, toaster } from 'evergreen-ui';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 
+import {FormWrapper} from './styles';
+
 class Form extends Component {
   state = {
     name: '',
@@ -20,7 +22,9 @@ class Form extends Component {
   };
 
   onCreateCompany = (event, authUser) => {
-    this.props.firebase.companies().add({
+    console.log(authUser)
+
+    this.props.firebase.userCompanies(authUser.uid).add({
       name: this.state.name,
       email: this.state.email,
       salary: this.state.salary,
@@ -29,7 +33,7 @@ class Form extends Component {
       link: this.state.link,
       userId: authUser.uid,
       createdAt: this.props.firebase.fieldValue.serverTimestamp(),
-    });
+    })
 
     this.setState({
       name: '',
@@ -55,7 +59,7 @@ class Form extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div>
+          <FormWrapper>
             <Paragraph>Name</Paragraph>
 
             <TextInput
@@ -115,7 +119,7 @@ class Form extends Component {
             >
               Submit
             </Button>
-          </div>
+          </FormWrapper>
         )}
       </AuthUserContext.Consumer>
     );
