@@ -3,6 +3,8 @@ import { TextInput, Button, Paragraph, toaster } from 'evergreen-ui';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 
+import {FormWrapper} from './styles';
+
 class Form extends Component {
   state = {
     name: '',
@@ -57,7 +59,7 @@ class Form extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div>
+          <FormWrapper>
             <Paragraph>Name</Paragraph>
 
             <TextInput
@@ -117,7 +119,7 @@ class Form extends Component {
             >
               Submit
             </Button>
-          </div>
+          </FormWrapper>
         )}
       </AuthUserContext.Consumer>
     );
