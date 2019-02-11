@@ -1,14 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { IconButton } from "evergreen-ui";
+import React from 'react';
+import { Button } from 'evergreen-ui';
 
-const Header = ({ setShown }) => (
-  <div>
-    <IconButton icon="menu" onClick={() => setShown(true)} />
-    <Link to="/">Home</Link>
-    <Link to="/about">About</Link>
-    <Link to="/profile">Profile</Link>
-  </div>
+const Header = ({ setNavShown }) => (
+  <Button
+    height={32}
+    marginRight={16}
+    appearance="minimal"
+    iconBefore="menu"
+    onClick={() => setNavShown(true)}
+  >
+  </Button>
 );
 
 export default Header;

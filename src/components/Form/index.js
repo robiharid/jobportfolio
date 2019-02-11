@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TextInput, Button, Paragraph, toaster } from 'evergreen-ui';
+import { TextInput, Button, Paragraph, Dialog } from 'evergreen-ui';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
 
-import {FormWrapper} from './styles';
+import { FormWrapper } from './styles';
 
 class Form extends Component {
   state = {
@@ -22,8 +22,6 @@ class Form extends Component {
   };
 
   onCreateCompany = (event, authUser) => {
-    console.log(authUser)
-
     this.props.firebase.userCompanies(authUser.uid).add({
       name: this.state.name,
       email: this.state.email,
@@ -33,7 +31,7 @@ class Form extends Component {
       link: this.state.link,
       userId: authUser.uid,
       createdAt: this.props.firebase.fieldValue.serverTimestamp(),
-    })
+    });
 
     this.setState({
       name: '',
@@ -43,6 +41,8 @@ class Form extends Component {
       location: '',
       link: '',
     });
+
+    this.props.closeModal();
 
     // event.preventDefault();
   };
@@ -56,70 +56,74 @@ class Form extends Component {
       location,
       link,
     } = this.state;
+
+    const { isShown, closeModal } = this.props;
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <FormWrapper>
-            <Paragraph>Name</Paragraph>
+          <Dialog
+            isShown={isShown}
+            title="New Company"
+            onCloseComplete={closeModal}
+            confirmLabel="Add"
+            onConfirm={event => this.onCreateCompany(event, authUser)}
+          >
+            <FormWrapper>
+              <Paragraph>Name</Paragraph>
 
-            <TextInput
-              onChange={this.handleInputChange}
-              value={name}
-              name="name"
-              type="text"
-            />
+              <TextInput
+                onChange={this.handleInputChange}
+                value={name}
+                name="name"
+                type="text"
+              />
 
-            <Paragraph>Email</Paragraph>
+              <Paragraph>Email</Paragraph>
 
-            <TextInput
-              onChange={this.handleInputChange}
-              value={email}
-              name="email"
-              type="email"
-            />
+              <TextInput
+                onChange={this.handleInputChange}
+                value={email}
+                name="email"
+                type="email"
+              />
 
-            <Paragraph>Salary</Paragraph>
+              <Paragraph>Salary</Paragraph>
 
-            <TextInput
-              onChange={this.handleInputChange}
-              value={salary}
-              name="salary"
-              type="number"
-            />
+              <TextInput
+                onChange={this.handleInputChange}
+                value={salary}
+                name="salary"
+                type="number"
+              />
 
-            <Paragraph>Deadline</Paragraph>
+              <Paragraph>Deadline</Paragraph>
 
-            <TextInput
-              onChange={this.handleInputChange}
-              value={deadline}
-              name="deadline"
-              type="text"
-            />
+              <TextInput
+                onChange={this.handleInputChange}
+                value={deadline}
+                name="deadline"
+                type="text"
+              />
 
-            <Paragraph>Location</Paragraph>
+              <Paragraph>Location</Paragraph>
 
-            <TextInput
-              onChange={this.handleInputChange}
-              value={location}
-              name="location"
-              type="text"
-            />
+              <TextInput
+                onChange={this.handleInputChange}
+                value={location}
+                name="location"
+                type="text"
+              />
 
-            <Paragraph>Link</Paragraph>
+              <Paragraph>Link</Paragraph>
 
-            <TextInput
-              onChange={this.handleInputChange}
-              value={link}
-              name="link"
-              type="text"
-            />
-
-            <Button
-              onClick={event => this.onCreateCompany(event, authUser)}
-            >
-              Submit
-            </Button>
-          </FormWrapper>
+              <TextInput
+                onChange={this.handleInputChange}
+                value={link}
+                name="link"
+                type="text"
+              />
+            </FormWrapper>
+          </Dialog>
         )}
       </AuthUserContext.Consumer>
     );

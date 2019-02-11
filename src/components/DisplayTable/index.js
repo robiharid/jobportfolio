@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'evergreen-ui';
 import { AuthUserContext } from '../Session';
 import { withFirebase } from '../Firebase';
-
+import { Button } from 'evergreen-ui';
 class DisplayTable extends Component {
   state = {
     loading: false,
@@ -16,7 +16,7 @@ class DisplayTable extends Component {
 
   onListenForCompanies = () => {
     this.setState({ loading: true });
-    console.log("onListenForCompanies", this.props)
+
     this.unsubscribe = this.props.firebase
       .userCompanies(this.props.authUser.uid)
       .orderBy('createdAt', 'desc')
@@ -50,7 +50,6 @@ class DisplayTable extends Component {
   };
 
   render() {
-    console.log(this.props);
     const { users } = this.props;
     const { companies, loading } = this.state;
     return (
@@ -58,9 +57,9 @@ class DisplayTable extends Component {
         {authUser => (
           <div>
             {!loading && companies && (
-              <button type="button" onClick={this.onNextPage}>
+              <Button appearance="primary" onClick={this.onNextPage}>
                 More
-              </button>
+              </Button>
             )}
 
             {loading && <div>Loading ...</div>}
@@ -81,9 +80,8 @@ class DisplayTable extends Component {
                   </Table.TextHeaderCell>
                   <Table.TextHeaderCell>ID</Table.TextHeaderCell>
                 </Table.Head>
-                <Table.Body height={240}>
+                <Table.Body height={480}>
                   {companies.map(company => {
-                    console.log('company', company);
                     return (
                       <Table.Row
                         key={company.id}
